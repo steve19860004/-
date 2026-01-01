@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全能冷氣評估系統 (含報價與分享)</title>
+    <title>全能冷氣評估系統 (專業版)</title>
     <style>
         :root {
             --primary-color: #007bff;
             --primary-hover: #0056b3;
-            --momo-color: #d0021b; /* Momo 品牌色 */
-            --line-color: #06c755; /* LINE 品牌色 */
+            --momo-color: #d0021b;
+            --line-color: #06c755;
             --bg-color: #f0f2f5;
             --card-bg: #ffffff;
             --text-color: #333;
+            --highlight-orange: #fd7e14;
         }
 
         body {
@@ -43,7 +44,6 @@
             font-size: 1.6rem;
         }
 
-        /* Tabs 切換 */
         .tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #eee; }
         .tab-btn {
             flex: 1; padding: 12px; border: none; background: none;
@@ -58,9 +58,9 @@
 
         .input-group { margin-bottom: 1rem; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-        input[type="number"] {
+        input[type="number"], select {
             width: 100%; padding: 12px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 16px; box-sizing: border-box;
+            border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fff;
         }
 
         .checkbox-group {
@@ -69,40 +69,50 @@
         .checkbox-item { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; }
         .checkbox-item input { margin-right: 10px; width: 18px; height: 18px; }
 
-        /* 按鈕群組 */
-        .btn-group { display: flex; gap: 10px; flex-direction: column; }
+        .btn-row { display: flex; gap: 10px; margin-top: 20px; }
         
         button.calc-btn {
-            width: 100%; padding: 14px; background-color: var(--primary-color);
+            flex: 2; padding: 14px; background-color: var(--primary-color);
             color: white; border: none; border-radius: 8px;
             font-size: 18px; font-weight: bold; cursor: pointer;
             transition: background 0.3s;
         }
         button.calc-btn:hover { background-color: var(--primary-hover); }
 
-        /* 結果區塊 */
+        button.reset-btn {
+            flex: 1; padding: 14px; background-color: #e2e6ea;
+            color: #495057; border: none; border-radius: 8px;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+        button.reset-btn:hover { background-color: #dbe2e8; }
+
         #result { margin-top: 25px; display: none; border-top: 1px solid #eee; padding-top: 20px; }
         
         .result-card {
             background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 10px;
         }
         
-        /* 推薦卡片 */
         .rec-card {
             background: #fff; border: 2px solid var(--primary-color);
             border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 15px;
+            position: relative; overflow: hidden;
         }
         .rec-title { font-size: 0.9rem; color: #666; margin-bottom: 5px; }
         .rec-value { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
         
-        /* 價格區塊 */
         .price-box {
             background: #fff0f1; border: 1px solid #ffcdd2;
             padding: 10px; border-radius: 6px; margin-top: 10px;
             color: #c62828; font-weight: bold;
         }
 
-        /* 行動按鈕區 (Momo & Share) */
+        /* 2. 補助金標籤 */
+        .rebate-tag {
+            background-color: var(--highlight-orange); color: white;
+            font-size: 0.8rem; padding: 4px 8px; border-radius: 4px;
+            display: inline-block; margin-top: 5px;
+        }
+
         .action-buttons {
             display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;
         }
@@ -113,8 +123,6 @@
         .momo-btn { background-color: var(--momo-color); grid-column: span 2; font-size: 1.1rem; padding: 12px; }
         .line-btn { background-color: var(--line-color); }
         .copy-btn { background-color: #6c757d; }
-
-        .action-btn:hover { opacity: 0.9; }
 
         .note { font-size: 0.8rem; color: #999; margin-top: 20px; text-align: center; }
     </style>
@@ -127,6 +135,15 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('dimensions')">輸入長寬</button>
         <button class="tab-btn" onclick="switchTab('area')">直接輸入坪數</button>
+    </div>
+
+    <div class="input-group">
+        <label>空間類型 (影響所需冷度)</label>
+        <select id="roomType">
+            <option value="450">臥室/一般房間 (450 kcal/坪)</option>
+            <option value="500" selected>標準/書房 (500 kcal/坪)</option>
+            <option value="600">客廳/開放式空間 (600 kcal/坪)</option>
+        </select>
     </div>
 
     <div id="input-dimensions" class="input-section active">
@@ -150,11 +167,14 @@
         <label class="checkbox-item"><input type="checkbox" id="heatSource"> 挑高/熱源多 (+10%)</label>
     </div>
 
-    <button class="calc-btn" onclick="calculateAC()">開始計算</button>
+    <div class="btn-row">
+        <button class="reset-btn" onclick="resetForm()">清除</button>
+        <button class="calc-btn" onclick="calculateAC()">開始計算</button>
+    </div>
 
     <div id="result">
         <div class="result-card">
-            <div>坪數：<span id="resPing">0</span> 坪</div>
+            <div>空間：<span id="resPing">0</span> 坪 / <span id="resRoomType">標準</span></div>
             <div>環境加成：<span id="resEnv">無</span></div>
         </div>
 
@@ -162,6 +182,8 @@
             <div class="rec-title">建議安裝規格</div>
             <div class="rec-value" id="resModel">計算中...</div>
             
+            <div id="rebateInfo" class="rebate-tag" style="display:none;"></div>
+
             <div class="price-box">
                 預估預算：<span id="resPrice">--</span>
             </div>
@@ -171,21 +193,18 @@
             <a href="#" target="_blank" id="momoLink" class="action-btn momo-btn">
                 🛍️ 前往 Momo 比價購買
             </a>
-            
             <button onclick="shareToLine()" class="action-btn line-btn">LINE 分享</button>
             <button onclick="copyToClipboard()" class="action-btn copy-btn">複製結果</button>
         </div>
     </div>
 
     <div class="note">
-        * 價格僅供參考，實際依品牌與活動而定。<br>
-        * 點擊購買按鈕將開啟 Momo 搜尋頁面。
+        * 補助金依政府公告為準 (貨物稅減免)。<br>
+        * 價格僅供參考，實際依品牌與活動而定。
     </div>
 </div>
 
 <script>
-    // --- 1. 價格資料庫 (可自行調整價格範圍) ---
-    // key: kW數, value: {min: 最低價, max: 最高價}
     const priceData = {
         2.2: { min: 14000, max: 22000 },
         2.8: { min: 17000, max: 26000 },
@@ -198,7 +217,7 @@
     };
 
     let currentMode = 'dimensions';
-    let finalResultText = ""; // 儲存要分享的文字
+    let finalResultText = "";
 
     function switchTab(mode) {
         currentMode = mode;
@@ -206,6 +225,16 @@
         event.target.classList.add('active');
         document.querySelectorAll('.input-section').forEach(s => s.classList.remove('active'));
         document.getElementById(mode === 'dimensions' ? 'input-dimensions' : 'input-area').classList.add('active');
+        document.getElementById('result').style.display = 'none';
+    }
+
+    // 清除重填功能
+    function resetForm() {
+        document.getElementById('length').value = '';
+        document.getElementById('width').value = '';
+        document.getElementById('pingInput').value = '';
+        document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+        document.getElementById('roomType').value = '500'; // 回復預設
         document.getElementById('result').style.display = 'none';
     }
 
@@ -222,77 +251,84 @@
             if (!ping) return alert("請輸入坪數");
         }
 
-        // 2. 環境加成與紀錄
-        let reqKcal = ping * 500;
+        // 2. 取得基礎冷度 (空間類型)
+        const baseKcal = parseInt(document.getElementById('roomType').value);
+        let reqKcal = ping * baseKcal;
+
+        // 3. 環境加成
         let envText = [];
         if (document.getElementById('westSun').checked) { reqKcal *= 1.2; envText.push("西曬"); }
         if (document.getElementById('topFloor').checked) { reqKcal *= 1.2; envText.push("頂樓"); }
-        if (document.getElementById('heatSource').checked) { reqKcal *= 1.1; envText.push("熱源"); }
+        if (document.getElementById('heatSource').checked) { reqKcal *= 1.1; envText.push("挑高/熱源"); }
         if (envText.length === 0) envText.push("標準環境");
 
-        // 3. 換算 kW 與匹配型號
+        // 4. 換算與匹配
         const reqKW = reqKcal / 860;
         const standardSizes = [2.2, 2.8, 3.6, 4.1, 5.0, 6.3, 7.1, 8.0];
         let recSize = standardSizes.find(s => s >= reqKW);
         
-        // 4. 更新畫面
+        // 5. 更新畫面資訊
+        const roomTypeSelect = document.getElementById('roomType');
+        const roomTypeName = roomTypeSelect.options[roomTypeSelect.selectedIndex].text.split('(')[0];
+        
         document.getElementById('resPing').innerText = ping.toFixed(1);
+        document.getElementById('resRoomType').innerText = roomTypeName;
         document.getElementById('resEnv').innerText = envText.join("、");
         
         let priceStr = "需專人報價";
         let modelStr = "";
+        let rebateStr = "";
 
         if (recSize) {
             modelStr = `${recSize} kW`;
-            // 取得價格區間
+            
+            // 價格
             if (priceData[recSize]) {
                 const p = priceData[recSize];
-                const minP = p.min.toLocaleString();
-                const maxP = p.max.toLocaleString();
-                priceStr = `$${minP} ~ $${maxP}`;
+                priceStr = `$${p.min.toLocaleString()} ~ $${p.max.toLocaleString()}`;
             }
-            
-            // --- 修正重點：使用標準搜尋網址 ---
-            // encodeURIComponent 用來確保中文字元不會讓網址出錯
-            const keyword = encodeURIComponent(`${recSize}kw冷氣`);
+
+            // --- 貨物稅退稅計算 (估算值) ---
+            // 3.6kW 以下約退 1600, 以上約退 2000 (簡化規則)
+            const rebateAmount = recSize < 3.6 ? 1600 : 2000;
+            rebateStr = `🔥 政府節能補助：可退稅約 $${rebateAmount}`;
+            const rebateEl = document.getElementById('rebateInfo');
+            rebateEl.innerText = rebateStr;
+            rebateEl.style.display = 'inline-block';
+
+            // Momo 連結
+            const keyword = encodeURIComponent(`${recSize}kw冷氣 一級變頻`); // 加強關鍵字
             const momoUrl = `https://www.momoshop.com.tw/search/searchShop.jsp?keyword=${keyword}`;
-            
             document.getElementById('momoLink').href = momoUrl;
-            document.getElementById('momoLink').style.display = "flex"; 
+            document.getElementById('momoLink').style.display = "flex";
             
         } else {
             modelStr = `需求 > 8.0 kW (建議商用)`;
-            document.getElementById('momoLink').style.display = "none"; 
+            document.getElementById('momoLink').style.display = "none";
+            document.getElementById('rebateInfo').style.display = 'none';
         }
 
         document.getElementById('resModel').innerText = modelStr;
         document.getElementById('resPrice').innerText = priceStr;
         document.getElementById('result').style.display = 'block';
 
-        // 5. 準備分享文字
+        // 6. 準備分享文字
         finalResultText = 
 `【冷氣評估報告】
-🏠 坪數：${ping.toFixed(1)} 坪
-☀️ 環境：${envText.join("、")}
-❄️ 建議規格：${modelStr}
-💰 預算參考：${priceStr}
-(此為系統估算，僅供參考)`;
+🏠 空間：${ping.toFixed(1)}坪 (${roomTypeName})
+☀️ 條件：${envText.join("、")}
+❄️ 建議：${modelStr}
+💰 預算：${priceStr}
+${rebateStr ? rebateStr + "\n" : ""}(此為系統估算，僅供參考)`;
     }
 
-    // 分享功能：複製文字
     function copyToClipboard() {
         if (!finalResultText) return;
-        navigator.clipboard.writeText(finalResultText).then(() => {
-            alert("✅ 結果已複製！");
-        }).catch(err => {
-            alert("複製失敗，請手動複製。");
-        });
+        navigator.clipboard.writeText(finalResultText).then(() => alert("✅ 結果已複製！"));
     }
 
-    // 分享功能：LINE
     function shareToLine() {
         if (!finalResultText) return;
-        // 使用 LINE URL Scheme
         const url = `https://line.me/R/msg/text/?${encodeURIComponent(finalResultText)}`;
         window.open(url, '_blank');
     }
@@ -300,3 +336,4 @@
 
 </body>
 </html>
+
