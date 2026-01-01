@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全方位冷氣評估系統 (家用+商用)</title>
+    <title>全方位冷氣評估系統 (Google搜尋版)</title>
     <style>
         :root {
-            --primary-color: #0056b3; /* 改深藍色，更穩重 */
+            --primary-color: #0056b3;
             --primary-hover: #004494;
-            --business-color: #20c997; /* 商用強調色 */
-            --momo-color: #d0021b;
+            --business-color: #20c997;
+            --google-blue: #4285F4; /* Google 品牌藍 */
             --line-color: #06c755;
             --bg-color: #f4f6f9;
             --card-bg: #ffffff;
@@ -68,7 +68,6 @@
             border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fff;
         }
 
-        /* 特別標註商用選項 */
         optgroup[label="🏭 商用空間"] { color: var(--business-color); font-weight: bold; }
 
         .checkbox-group {
@@ -99,7 +98,6 @@
         .rec-title { font-size: 0.9rem; color: #666; margin-bottom: 5px; }
         .rec-value { font-size: 1.6rem; font-weight: bold; color: var(--primary-color); }
         
-        /* 推薦機型標籤 */
         .type-badge {
             background: #e9ecef; color: #555; padding: 3px 8px; 
             border-radius: 4px; font-size: 0.85rem; margin-top: 5px; display: inline-block;
@@ -112,9 +110,12 @@
             padding: 10px; border: none; border-radius: 6px; cursor: pointer;
             font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 5px; text-decoration: none; font-size: 0.9rem;
         }
-        .momo-btn { background-color: var(--momo-color); grid-column: span 2; font-size: 1.1rem; padding: 12px; }
+        /* 改為 Google Blue 按鈕 */
+        .google-btn { background-color: var(--google-blue); grid-column: span 2; font-size: 1.1rem; padding: 12px; }
         .line-btn { background-color: var(--line-color); }
         .copy-btn { background-color: #6c757d; }
+        .action-btn:hover { opacity: 0.9; }
+
     </style>
 </head>
 <body>
@@ -189,8 +190,8 @@
         </div>
 
         <div class="action-buttons">
-            <a href="#" target="_blank" id="momoLink" class="action-btn momo-btn">
-                🔍 搜尋適用冷氣 (Momo)
+            <a href="#" target="_blank" id="searchLink" class="action-btn google-btn">
+                🔍 Google 搜尋比價
             </a>
             <button onclick="shareToLine()" class="action-btn line-btn">LINE 分享</button>
             <button onclick="copyToClipboard()" class="action-btn copy-btn">複製結果</button>
@@ -199,7 +200,6 @@
 </div>
 
 <script>
-    // 商用價格較高，這裡稍微調整價格庫 (模擬用)
     const priceData = {
         2.2: { min: 14000, max: 22000 },
         2.8: { min: 18000, max: 28000 },
@@ -209,7 +209,7 @@
         6.3: { min: 42000, max: 58000 },
         7.1: { min: 50000, max: 65000 },
         8.0: { min: 58000, max: 75000 },
-        10.0: { min: 70000, max: 90000 }, // 商用常見
+        10.0: { min: 70000, max: 90000 }, 
         12.0: { min: 85000, max: 110000 },
         14.0: { min: 100000, max: 130000 }
     };
@@ -253,17 +253,16 @@
         const baseKcal = parseInt(document.getElementById('roomType').value);
         let reqKcal = ping * baseKcal;
 
-        // 3. 環境加成 (Checkbox)
+        // 3. 環境加成
         let envText = [];
         if (document.getElementById('westSun').checked) { reqKcal *= 1.2; envText.push("西曬"); }
         if (document.getElementById('topFloor').checked) { reqKcal *= 1.2; envText.push("頂樓"); }
         if (document.getElementById('glassWall').checked) { reqKcal *= 1.15; envText.push("玻璃帷幕"); }
         if (document.getElementById('crowded').checked) { reqKcal *= 1.1; envText.push("人潮多"); }
 
-        // 4. 挑高修正 (關鍵邏輯)
+        // 4. 挑高修正
         const height = parseFloat(document.getElementById('ceilingHeight').value) || 3.0;
         if (height > 3.0) {
-            // 每超過 3米，依比例增加負載 (簡易體積算法)
             const heightFactor = height / 3.0; 
             reqKcal *= heightFactor;
             envText.push(`挑高${height}m`);
@@ -271,14 +270,13 @@
 
         // 5. 規格匹配
         const reqKW = reqKcal / 860;
-        // 擴充規格陣列以包含商用大噸數
         const standardSizes = [2.2, 2.8, 3.6, 4.1, 5.0, 6.3, 7.1, 8.0, 10.0, 12.0, 14.0];
         let recSize = standardSizes.find(s => s >= reqKW);
         
-        // 顯示資訊準備
+        // 顯示準備
         const roomTypeSelect = document.getElementById('roomType');
         const roomTypeName = roomTypeSelect.options[roomTypeSelect.selectedIndex].text.split('(')[0];
-        const isCommercial = baseKcal >= 700; // 判斷是否為商用
+        const isCommercial = baseKcal >= 700; 
 
         document.getElementById('resTotalKcal').innerText = Math.round(reqKcal);
 
@@ -290,17 +288,17 @@
         if (recSize) {
             modelStr = `${recSize} kW`;
             
-            // 判斷機型建議
+            // 判斷機型與關鍵字
             if (isCommercial) {
                 if (recSize >= 8.0) {
                     unitTypeStr = "建議機型：箱型(落地) 或 吊隱式";
-                    searchKeyword = `${recSize}kw 商用冷氣`;
+                    searchKeyword = `${recSize}kw 商用冷氣 價格`;
                 } else {
                     unitTypeStr = "建議機型：四方吹(嵌入) 或 吊隱式";
-                    searchKeyword = `${recSize}kw 嵌入式冷氣`;
+                    searchKeyword = `${recSize}kw 嵌入式冷氣 價格`;
                 }
             } else {
-                searchKeyword = `${recSize}kw 冷氣`; // 家用
+                searchKeyword = `${recSize}kw 冷氣 價格`; // 家用搜尋
             }
 
             if (priceData[recSize]) {
@@ -308,14 +306,15 @@
                 priceStr = `$${p.min.toLocaleString()} ~ $${p.max.toLocaleString()}`;
             }
 
-            const momoUrl = `https://www.momoshop.com.tw/search/searchShop.jsp?keyword=${encodeURIComponent(searchKeyword)}`;
-            document.getElementById('momoLink').href = momoUrl;
-            document.getElementById('momoLink').style.display = "flex";
+            // 修改為 Google Search URL
+            const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(searchKeyword)}`;
+            document.getElementById('searchLink').href = googleUrl;
+            document.getElementById('searchLink').style.display = "flex";
 
         } else {
             modelStr = `需求 > 14 kW`;
             unitTypeStr = "建議使用：多聯變頻系統 (VRV)";
-            document.getElementById('momoLink').style.display = "none";
+            document.getElementById('searchLink').style.display = "none";
         }
 
         document.getElementById('resModel').innerText = modelStr;
