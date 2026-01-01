@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全能冷氣評估系統 (專業版)</title>
+    <title>全方位冷氣評估系統 (家用+商用)</title>
     <style>
         :root {
-            --primary-color: #007bff;
-            --primary-hover: #0056b3;
+            --primary-color: #0056b3; /* 改深藍色，更穩重 */
+            --primary-hover: #004494;
+            --business-color: #20c997; /* 商用強調色 */
             --momo-color: #d0021b;
             --line-color: #06c755;
-            --bg-color: #f0f2f5;
+            --bg-color: #f4f6f9;
             --card-bg: #ffffff;
             --text-color: #333;
-            --highlight-orange: #fd7e14;
         }
 
         body {
@@ -32,16 +32,20 @@
             background-color: var(--card-bg);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 500px;
+            max-width: 550px;
         }
 
         h1 {
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .subtitle {
+            text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;
         }
 
         .tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #eee; }
@@ -58,59 +62,47 @@
 
         .input-group { margin-bottom: 1rem; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        
         input[type="number"], select {
             width: 100%; padding: 12px; border: 1px solid #ddd;
             border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fff;
         }
 
+        /* 特別標註商用選項 */
+        optgroup[label="🏭 商用空間"] { color: var(--business-color); font-weight: bold; }
+
         .checkbox-group {
             background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 15px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
         }
-        .checkbox-item { display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; }
-        .checkbox-item input { margin-right: 10px; width: 18px; height: 18px; }
+        .checkbox-item { display: flex; align-items: center; cursor: pointer; font-size: 0.95rem;}
+        .checkbox-item input { margin-right: 8px; width: 18px; height: 18px; }
 
         .btn-row { display: flex; gap: 10px; margin-top: 20px; }
-        
         button.calc-btn {
             flex: 2; padding: 14px; background-color: var(--primary-color);
             color: white; border: none; border-radius: 8px;
-            font-size: 18px; font-weight: bold; cursor: pointer;
-            transition: background 0.3s;
+            font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s;
         }
         button.calc-btn:hover { background-color: var(--primary-hover); }
-
         button.reset-btn {
             flex: 1; padding: 14px; background-color: #e2e6ea;
-            color: #495057; border: none; border-radius: 8px;
-            font-size: 16px; font-weight: bold; cursor: pointer;
+            color: #495057; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
         }
-        button.reset-btn:hover { background-color: #dbe2e8; }
 
         #result { margin-top: 25px; display: none; border-top: 1px solid #eee; padding-top: 20px; }
-        
-        .result-card {
-            background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 10px;
-        }
         
         .rec-card {
             background: #fff; border: 2px solid var(--primary-color);
             border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 15px;
-            position: relative; overflow: hidden;
         }
         .rec-title { font-size: 0.9rem; color: #666; margin-bottom: 5px; }
-        .rec-value { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+        .rec-value { font-size: 1.6rem; font-weight: bold; color: var(--primary-color); }
         
-        .price-box {
-            background: #fff0f1; border: 1px solid #ffcdd2;
-            padding: 10px; border-radius: 6px; margin-top: 10px;
-            color: #c62828; font-weight: bold;
-        }
-
-        /* 2. 補助金標籤 */
-        .rebate-tag {
-            background-color: var(--highlight-orange); color: white;
-            font-size: 0.8rem; padding: 4px 8px; border-radius: 4px;
-            display: inline-block; margin-top: 5px;
+        /* 推薦機型標籤 */
+        .type-badge {
+            background: #e9ecef; color: #555; padding: 3px 8px; 
+            border-radius: 4px; font-size: 0.85rem; margin-top: 5px; display: inline-block;
         }
 
         .action-buttons {
@@ -123,14 +115,13 @@
         .momo-btn { background-color: var(--momo-color); grid-column: span 2; font-size: 1.1rem; padding: 12px; }
         .line-btn { background-color: var(--line-color); }
         .copy-btn { background-color: #6c757d; }
-
-        .note { font-size: 0.8rem; color: #999; margin-top: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>❄️ 全能冷氣評估師</h1>
+    <h1>🏭 全方位冷氣評估師</h1>
+    <div class="subtitle">支援居家、店面、辦公室、挑高空間</div>
     
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('dimensions')">輸入長寬</button>
@@ -138,82 +129,89 @@
     </div>
 
     <div class="input-group">
-        <label>空間類型 (影響所需冷度)</label>
+        <label>空間類型 (每坪基礎熱負載)</label>
         <select id="roomType">
-            <option value="450">臥室/一般房間 (450 kcal/坪)</option>
-            <option value="500" selected>標準/書房 (500 kcal/坪)</option>
-            <option value="600">客廳/開放式空間 (600 kcal/坪)</option>
+            <optgroup label="🏠 居家空間">
+                <option value="450">臥室 (450 kcal)</option>
+                <option value="500" selected>客廳/標準 (500 kcal)</option>
+                <option value="600">頂樓/西曬房 (600 kcal)</option>
+            </optgroup>
+            <optgroup label="🏭 商用空間">
+                <option value="700">一般辦公室/服飾店 (700 kcal)</option>
+                <option value="800">飲料店/人多場所 (800 kcal)</option>
+                <option value="1000">火鍋店/燒烤/機房 (1000 kcal)</option>
+            </optgroup>
         </select>
+    </div>
+
+    <div class="input-group">
+        <label>天花板高度 (公尺)</label>
+        <input type="number" id="ceilingHeight" placeholder="標準為 3.0，挑高請輸入實際高度" value="3.0" step="0.1">
     </div>
 
     <div id="input-dimensions" class="input-section active">
         <div class="input-group">
-            <label>長度 (公尺)</label> <input type="number" id="length" placeholder="例如：5.0">
+            <label>長度 (公尺)</label> <input type="number" id="length" placeholder="例如：8.0">
         </div>
         <div class="input-group">
-            <label>寬度 (公尺)</label> <input type="number" id="width" placeholder="例如：4.0">
+            <label>寬度 (公尺)</label> <input type="number" id="width" placeholder="例如：5.0">
         </div>
     </div>
 
     <div id="input-area" class="input-section">
         <div class="input-group">
-            <label>房間坪數</label> <input type="number" id="pingInput" placeholder="例如：6.5">
+            <label>坪數</label> <input type="number" id="pingInput" placeholder="例如：12">
         </div>
     </div>
 
     <div class="checkbox-group">
-        <label class="checkbox-item"><input type="checkbox" id="westSun"> 有西曬 (+20%)</label>
-        <label class="checkbox-item"><input type="checkbox" id="topFloor"> 住頂樓 (+20%)</label>
-        <label class="checkbox-item"><input type="checkbox" id="heatSource"> 挑高/熱源多 (+10%)</label>
+        <label class="checkbox-item"><input type="checkbox" id="westSun"> 西曬 (+20%)</label>
+        <label class="checkbox-item"><input type="checkbox" id="topFloor"> 頂樓 (+20%)</label>
+        <label class="checkbox-item"><input type="checkbox" id="glassWall"> 玻璃帷幕 (+15%)</label>
+        <label class="checkbox-item"><input type="checkbox" id="crowded"> 人潮擁擠 (+10%)</label>
     </div>
 
     <div class="btn-row">
         <button class="reset-btn" onclick="resetForm()">清除</button>
-        <button class="calc-btn" onclick="calculateAC()">開始計算</button>
+        <button class="calc-btn" onclick="calculateAC()">開始評估</button>
     </div>
 
     <div id="result">
-        <div class="result-card">
-            <div>空間：<span id="resPing">0</span> 坪 / <span id="resRoomType">標準</span></div>
-            <div>環境加成：<span id="resEnv">無</span></div>
-        </div>
-
         <div class="rec-card">
             <div class="rec-title">建議安裝規格</div>
             <div class="rec-value" id="resModel">計算中...</div>
+            <div id="resUnitType" class="type-badge">建議機型：壁掛式</div>
             
-            <div id="rebateInfo" class="rebate-tag" style="display:none;"></div>
-
-            <div class="price-box">
-                預估預算：<span id="resPrice">--</span>
+            <div style="margin-top: 15px; font-size: 0.9rem; color: #555;">
+                總熱負載：<span id="resTotalKcal">0</span> kcal/h
+                <br>預算參考：<span id="resPrice" style="color:#d0021b; font-weight:bold;">--</span>
             </div>
         </div>
 
         <div class="action-buttons">
             <a href="#" target="_blank" id="momoLink" class="action-btn momo-btn">
-                🛍️ 前往 Momo 比價購買
+                🔍 搜尋適用冷氣 (Momo)
             </a>
             <button onclick="shareToLine()" class="action-btn line-btn">LINE 分享</button>
             <button onclick="copyToClipboard()" class="action-btn copy-btn">複製結果</button>
         </div>
     </div>
-
-    <div class="note">
-        * 補助金依政府公告為準 (貨物稅減免)。<br>
-        * 價格僅供參考，實際依品牌與活動而定。
-    </div>
 </div>
 
 <script>
+    // 商用價格較高，這裡稍微調整價格庫 (模擬用)
     const priceData = {
         2.2: { min: 14000, max: 22000 },
-        2.8: { min: 17000, max: 26000 },
-        3.6: { min: 22000, max: 32000 },
-        4.1: { min: 26000, max: 38000 },
-        5.0: { min: 32000, max: 45000 },
-        6.3: { min: 40000, max: 55000 },
-        7.1: { min: 48000, max: 62000 },
-        8.0: { min: 55000, max: 70000 }
+        2.8: { min: 18000, max: 28000 },
+        3.6: { min: 25000, max: 35000 },
+        4.1: { min: 29000, max: 40000 },
+        5.0: { min: 35000, max: 48000 },
+        6.3: { min: 42000, max: 58000 },
+        7.1: { min: 50000, max: 65000 },
+        8.0: { min: 58000, max: 75000 },
+        10.0: { min: 70000, max: 90000 }, // 商用常見
+        12.0: { min: 85000, max: 110000 },
+        14.0: { min: 100000, max: 130000 }
     };
 
     let currentMode = 'dimensions';
@@ -228,18 +226,18 @@
         document.getElementById('result').style.display = 'none';
     }
 
-    // 清除重填功能
     function resetForm() {
         document.getElementById('length').value = '';
         document.getElementById('width').value = '';
         document.getElementById('pingInput').value = '';
+        document.getElementById('ceilingHeight').value = '3.0';
         document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
-        document.getElementById('roomType').value = '500'; // 回復預設
+        document.getElementById('roomType').selectedIndex = 1; 
         document.getElementById('result').style.display = 'none';
     }
 
     function calculateAC() {
-        // 1. 計算坪數
+        // 1. 坪數
         let ping = 0;
         if (currentMode === 'dimensions') {
             const l = parseFloat(document.getElementById('length').value);
@@ -251,89 +249,100 @@
             if (!ping) return alert("請輸入坪數");
         }
 
-        // 2. 取得基礎冷度 (空間類型)
+        // 2. 基礎熱負載
         const baseKcal = parseInt(document.getElementById('roomType').value);
         let reqKcal = ping * baseKcal;
 
-        // 3. 環境加成
+        // 3. 環境加成 (Checkbox)
         let envText = [];
         if (document.getElementById('westSun').checked) { reqKcal *= 1.2; envText.push("西曬"); }
         if (document.getElementById('topFloor').checked) { reqKcal *= 1.2; envText.push("頂樓"); }
-        if (document.getElementById('heatSource').checked) { reqKcal *= 1.1; envText.push("挑高/熱源"); }
-        if (envText.length === 0) envText.push("標準環境");
+        if (document.getElementById('glassWall').checked) { reqKcal *= 1.15; envText.push("玻璃帷幕"); }
+        if (document.getElementById('crowded').checked) { reqKcal *= 1.1; envText.push("人潮多"); }
 
-        // 4. 換算與匹配
+        // 4. 挑高修正 (關鍵邏輯)
+        const height = parseFloat(document.getElementById('ceilingHeight').value) || 3.0;
+        if (height > 3.0) {
+            // 每超過 3米，依比例增加負載 (簡易體積算法)
+            const heightFactor = height / 3.0; 
+            reqKcal *= heightFactor;
+            envText.push(`挑高${height}m`);
+        }
+
+        // 5. 規格匹配
         const reqKW = reqKcal / 860;
-        const standardSizes = [2.2, 2.8, 3.6, 4.1, 5.0, 6.3, 7.1, 8.0];
+        // 擴充規格陣列以包含商用大噸數
+        const standardSizes = [2.2, 2.8, 3.6, 4.1, 5.0, 6.3, 7.1, 8.0, 10.0, 12.0, 14.0];
         let recSize = standardSizes.find(s => s >= reqKW);
         
-        // 5. 更新畫面資訊
+        // 顯示資訊準備
         const roomTypeSelect = document.getElementById('roomType');
         const roomTypeName = roomTypeSelect.options[roomTypeSelect.selectedIndex].text.split('(')[0];
-        
-        document.getElementById('resPing').innerText = ping.toFixed(1);
-        document.getElementById('resRoomType').innerText = roomTypeName;
-        document.getElementById('resEnv').innerText = envText.join("、");
-        
-        let priceStr = "需專人報價";
+        const isCommercial = baseKcal >= 700; // 判斷是否為商用
+
+        document.getElementById('resTotalKcal').innerText = Math.round(reqKcal);
+
         let modelStr = "";
-        let rebateStr = "";
+        let priceStr = "需專案報價";
+        let unitTypeStr = "建議機型：壁掛式";
+        let searchKeyword = "";
 
         if (recSize) {
             modelStr = `${recSize} kW`;
             
-            // 價格
+            // 判斷機型建議
+            if (isCommercial) {
+                if (recSize >= 8.0) {
+                    unitTypeStr = "建議機型：箱型(落地) 或 吊隱式";
+                    searchKeyword = `${recSize}kw 商用冷氣`;
+                } else {
+                    unitTypeStr = "建議機型：四方吹(嵌入) 或 吊隱式";
+                    searchKeyword = `${recSize}kw 嵌入式冷氣`;
+                }
+            } else {
+                searchKeyword = `${recSize}kw 冷氣`; // 家用
+            }
+
             if (priceData[recSize]) {
                 const p = priceData[recSize];
                 priceStr = `$${p.min.toLocaleString()} ~ $${p.max.toLocaleString()}`;
             }
 
-            // --- 貨物稅退稅計算 (估算值) ---
-            // 3.6kW 以下約退 1600, 以上約退 2000 (簡化規則)
-            const rebateAmount = recSize < 3.6 ? 1600 : 2000;
-            rebateStr = `🔥 政府節能補助：可退稅約 $${rebateAmount}`;
-            const rebateEl = document.getElementById('rebateInfo');
-            rebateEl.innerText = rebateStr;
-            rebateEl.style.display = 'inline-block';
-
-            // Momo 連結
-            const keyword = encodeURIComponent(`${recSize}kw冷氣 一級變頻`); // 加強關鍵字
-            const momoUrl = `https://www.momoshop.com.tw/search/searchShop.jsp?keyword=${keyword}`;
+            const momoUrl = `https://www.momoshop.com.tw/search/searchShop.jsp?keyword=${encodeURIComponent(searchKeyword)}`;
             document.getElementById('momoLink').href = momoUrl;
             document.getElementById('momoLink').style.display = "flex";
-            
+
         } else {
-            modelStr = `需求 > 8.0 kW (建議商用)`;
+            modelStr = `需求 > 14 kW`;
+            unitTypeStr = "建議使用：多聯變頻系統 (VRV)";
             document.getElementById('momoLink').style.display = "none";
-            document.getElementById('rebateInfo').style.display = 'none';
         }
 
         document.getElementById('resModel').innerText = modelStr;
+        document.getElementById('resUnitType').innerText = unitTypeStr;
         document.getElementById('resPrice').innerText = priceStr;
         document.getElementById('result').style.display = 'block';
 
-        // 6. 準備分享文字
+        // 6. 分享文字
         finalResultText = 
-`【冷氣評估報告】
-🏠 空間：${ping.toFixed(1)}坪 (${roomTypeName})
-☀️ 條件：${envText.join("、")}
-❄️ 建議：${modelStr}
+`【${isCommercial ? '商用' : '家用'}冷氣評估】
+🏠 場域：${roomTypeName}
+📏 坪數：${ping.toFixed(1)} 坪 (高${height}m)
+☀️ 條件：${envText.length ? envText.join("、") : "標準"}
+❄️ 建議：${modelStr} (${unitTypeStr.split("：")[1]})
 💰 預算：${priceStr}
-${rebateStr ? rebateStr + "\n" : ""}(此為系統估算，僅供參考)`;
+(此為系統估算，僅供參考)`;
     }
 
     function copyToClipboard() {
         if (!finalResultText) return;
         navigator.clipboard.writeText(finalResultText).then(() => alert("✅ 結果已複製！"));
     }
-
     function shareToLine() {
         if (!finalResultText) return;
-        const url = `https://line.me/R/msg/text/?${encodeURIComponent(finalResultText)}`;
-        window.open(url, '_blank');
+        window.open(`https://line.me/R/msg/text/?${encodeURIComponent(finalResultText)}`, '_blank');
     }
 </script>
 
 </body>
 </html>
-
