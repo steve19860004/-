@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全方位冷氣評估系統 (Google搜尋版)</title>
+    <title>品盛冷氣行 - 線上評估系統</title>
     <style>
         :root {
             --primary-color: #0056b3;
             --primary-hover: #004494;
             --business-color: #20c997;
-            --google-blue: #4285F4; /* Google 品牌藍 */
+            --google-blue: #4285F4;
             --line-color: #06c755;
             --bg-color: #f4f6f9;
             --card-bg: #ffffff;
@@ -26,6 +26,7 @@
             margin: 0;
             padding: 20px;
             color: var(--text-color);
+            flex-direction: column; /* 為了讓版權在下方，改為垂直排列 */
         }
 
         .container {
@@ -35,6 +36,7 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 550px;
+            margin-bottom: 20px;
         }
 
         h1 {
@@ -46,6 +48,7 @@
         
         .subtitle {
             text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;
+            font-weight: bold;
         }
 
         .tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #eee; }
@@ -110,19 +113,29 @@
             padding: 10px; border: none; border-radius: 6px; cursor: pointer;
             font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 5px; text-decoration: none; font-size: 0.9rem;
         }
-        /* 改為 Google Blue 按鈕 */
         .google-btn { background-color: var(--google-blue); grid-column: span 2; font-size: 1.1rem; padding: 12px; }
         .line-btn { background-color: var(--line-color); }
         .copy-btn { background-color: #6c757d; }
         .action-btn:hover { opacity: 0.9; }
 
+        /* 版權 Footer 樣式 */
+        .footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 10px;
+        }
+        .footer span {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🏭 全方位冷氣評估師</h1>
-    <div class="subtitle">支援居家、店面、辦公室、挑高空間</div>
+    <h1>❄️ 品盛冷氣行</h1>
+    <div class="subtitle">專業冷氣評估系統 | 居家・商用・工程</div>
     
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('dimensions')">輸入長寬</button>
@@ -199,7 +212,15 @@
     </div>
 </div>
 
+<div class="footer">
+    &copy; <span id="year"></span> <strong>品盛冷氣行</strong> 版權所有<br>
+    專業冷氣規劃・安裝・維修・保養
+</div>
+
 <script>
+    // 自動更新年份
+    document.getElementById('year').innerText = new Date().getFullYear();
+
     const priceData = {
         2.2: { min: 14000, max: 22000 },
         2.8: { min: 18000, max: 28000 },
@@ -237,7 +258,6 @@
     }
 
     function calculateAC() {
-        // 1. 坪數
         let ping = 0;
         if (currentMode === 'dimensions') {
             const l = parseFloat(document.getElementById('length').value);
@@ -249,18 +269,15 @@
             if (!ping) return alert("請輸入坪數");
         }
 
-        // 2. 基礎熱負載
         const baseKcal = parseInt(document.getElementById('roomType').value);
         let reqKcal = ping * baseKcal;
 
-        // 3. 環境加成
         let envText = [];
         if (document.getElementById('westSun').checked) { reqKcal *= 1.2; envText.push("西曬"); }
         if (document.getElementById('topFloor').checked) { reqKcal *= 1.2; envText.push("頂樓"); }
         if (document.getElementById('glassWall').checked) { reqKcal *= 1.15; envText.push("玻璃帷幕"); }
         if (document.getElementById('crowded').checked) { reqKcal *= 1.1; envText.push("人潮多"); }
 
-        // 4. 挑高修正
         const height = parseFloat(document.getElementById('ceilingHeight').value) || 3.0;
         if (height > 3.0) {
             const heightFactor = height / 3.0; 
@@ -268,12 +285,10 @@
             envText.push(`挑高${height}m`);
         }
 
-        // 5. 規格匹配
         const reqKW = reqKcal / 860;
         const standardSizes = [2.2, 2.8, 3.6, 4.1, 5.0, 6.3, 7.1, 8.0, 10.0, 12.0, 14.0];
         let recSize = standardSizes.find(s => s >= reqKW);
         
-        // 顯示準備
         const roomTypeSelect = document.getElementById('roomType');
         const roomTypeName = roomTypeSelect.options[roomTypeSelect.selectedIndex].text.split('(')[0];
         const isCommercial = baseKcal >= 700; 
@@ -288,7 +303,6 @@
         if (recSize) {
             modelStr = `${recSize} kW`;
             
-            // 判斷機型與關鍵字
             if (isCommercial) {
                 if (recSize >= 8.0) {
                     unitTypeStr = "建議機型：箱型(落地) 或 吊隱式";
@@ -298,7 +312,7 @@
                     searchKeyword = `${recSize}kw 嵌入式冷氣 價格`;
                 }
             } else {
-                searchKeyword = `${recSize}kw 冷氣 價格`; // 家用搜尋
+                searchKeyword = `${recSize}kw 冷氣 價格`;
             }
 
             if (priceData[recSize]) {
@@ -306,7 +320,6 @@
                 priceStr = `$${p.min.toLocaleString()} ~ $${p.max.toLocaleString()}`;
             }
 
-            // 修改為 Google Search URL
             const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(searchKeyword)}`;
             document.getElementById('searchLink').href = googleUrl;
             document.getElementById('searchLink').style.display = "flex";
@@ -322,9 +335,9 @@
         document.getElementById('resPrice').innerText = priceStr;
         document.getElementById('result').style.display = 'block';
 
-        // 6. 分享文字
+        // 6. 分享文字加入品牌名稱
         finalResultText = 
-`【${isCommercial ? '商用' : '家用'}冷氣評估】
+`【品盛冷氣行｜專業評估】
 🏠 場域：${roomTypeName}
 📏 坪數：${ping.toFixed(1)} 坪 (高${height}m)
 ☀️ 條件：${envText.length ? envText.join("、") : "標準"}
