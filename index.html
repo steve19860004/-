@@ -15,12 +15,14 @@
             --business-color: #20c997;
             --google-blue: #4285F4;
             --line-color: #06c755;
+            --phone-color: #0dcaf0; /* 電話按鈕顏色 */
             --bg-color: #f0f4f8;
             --card-bg: #ffffff;
             --text-color: #333;
             --badge-red: #ff4757;
             --energy-yellow: #fff3cd;
             --saving-green: #d4edda;
+            --fee-bg: #f8f9fa;
         }
 
         body {
@@ -32,7 +34,7 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            padding-bottom: 80px; /* 留空間給懸浮按鈕 */
+            padding-bottom: 100px; /* 留空間給雙懸浮按鈕 */
             color: var(--text-color);
             flex-direction: column;
         }
@@ -150,6 +152,14 @@
             border-radius: 5px; margin-top: 10px; text-align: center; font-weight: bold; border: 1px solid #c3e6cb;
         }
 
+        /* 施工費用表格區 */
+        .fee-section { margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 15px; display: none; }
+        .fee-title { font-weight: bold; color: #555; margin-bottom: 10px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px;}
+        .fee-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 10px; }
+        .fee-table td { padding: 8px; border-bottom: 1px solid #eee; }
+        .fee-table td:last-child { text-align: right; font-weight: bold; color: #333; }
+        .fee-note { font-size: 0.8rem; color: #999; text-align: center; }
+
         .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .action-btn {
             padding: 12px; border: none; border-radius: 8px; cursor: pointer;
@@ -163,36 +173,44 @@
         .footer { text-align: center; font-size: 0.85rem; color: #888; margin-top: 10px; line-height: 1.6; }
         .footer span { font-weight: bold; color: var(--primary-color); }
 
-        /* 懸浮按鈕 */
+        /* 懸浮按鈕群組 */
+        .float-group {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
+            display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
+        }
         .float-btn {
-            position: fixed; bottom: 20px; right: 20px;
             background-color: var(--line-color); color: white;
             padding: 12px 20px; border-radius: 50px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             font-weight: bold; text-decoration: none;
             display: flex; align-items: center; gap: 8px;
-            z-index: 100; transition: transform 0.2s;
+            transition: transform 0.2s;
         }
+        .float-btn.phone { background-color: var(--phone-color); color: #fff; }
         .float-btn:hover { transform: scale(1.05); }
         .float-btn:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
 
-<a href="https://line.me/R/ti/p/@bah4568u" target="_blank" class="float-btn">
-    💬 線上預約/諮詢
-</a>
+<div class="float-group">
+    <a href="tel:0912132100" class="float-btn phone">
+        📞 撥打電話
+    </a>
+    <a href="https://line.me/R/ti/p/@bah4568u" target="_blank" class="float-btn">
+        💬 LINE 預約
+    </a>
+</div>
 
 <div class="container">
     <div class="new-badge">2026 最新</div>
-    
     <img src="logo.jpg" alt="品盛冷氣行" class="brand-logo" onerror="this.style.display='none'">
     
     <h1>❄️ 品盛冷氣行</h1>
     <div class="subtitle">冷氣大小專業評估器</div>
     <div class="desc-text">
         ✨ 輸入坪數算噸數，Google 幫你查價格<br>
-        💰 <b>獨家：</b>新舊冷氣電費對決，算出能省多少錢！
+        💰 <b>透明：</b>含電費估算與施工行情參考
     </div>
     
     <div class="tabs">
@@ -283,8 +301,19 @@
                 <div class="saving-highlight">
                     換新冷氣，每月省下約 $ <span id="saveAmount">0</span> 元！
                 </div>
-                <div style="font-size:0.75rem; color:#856404; margin-top:5px; text-align:center; opacity:0.8;">
-                    *以每天開<span id="resHours">8</span>小時，電價$4.5/度估算
+            </div>
+
+            <div style="margin-top:20px; text-align:center;">
+                <button onclick="toggleFees()" style="background:none; border:none; color:#0056b3; text-decoration:underline; cursor:pointer; font-size:0.9rem;">
+                    📋 查看額外施工參考行情
+                </button>
+                <div id="feeSection" class="fee-section">
+                    <div class="fee-title">🔧 特殊施工行情參考</div>
+                    <table class="fee-table" id="feeTable">
+                        </table>
+                    <div class="fee-note">
+                        *以上為連工帶料參考價，實際依現場環境難易度報價為準。<br>基本安裝通常包含5米銅管與電線。
+                    </div>
                 </div>
             </div>
 
@@ -324,6 +353,16 @@
         14.0: { min: 100000, max: 130000 }
     };
 
+    // 施工費用參考
+    const installFees = [
+        { item: "室外機豪華A架", price: "$1,500 起" },
+        { item: "牆面洗孔 (1孔)", price: "$800 ~ $1,200" },
+        { item: "冷媒管延長 (每米)", price: "$400 ~ $500" },
+        { item: "電源線延長 (每米)", price: "$100 ~ $150" },
+        { item: "排水器安裝", price: "$1,500 起" },
+        { item: "拆除舊機 (回收免)", price: "$500 ~ $1,000" }
+    ];
+
     let currentMode = 'dimensions';
     let finalResultText = "";
 
@@ -339,6 +378,21 @@
     function updateRangeVal(val) {
         document.getElementById('hoursDisplay').innerText = val + " 小時";
     }
+    
+    function toggleFees() {
+        const feeSec = document.getElementById('feeSection');
+        if (feeSec.style.display === 'block') {
+            feeSec.style.display = 'none';
+        } else {
+            const table = document.getElementById('feeTable');
+            table.innerHTML = "";
+            installFees.forEach(f => {
+                const row = `<tr><td>${f.item}</td><td>${f.price}</td></tr>`;
+                table.innerHTML += row;
+            });
+            feeSec.style.display = 'block';
+        }
+    }
 
     function resetForm() {
         document.getElementById('length').value = '';
@@ -350,6 +404,7 @@
         document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
         document.getElementById('roomType').selectedIndex = 1; 
         document.getElementById('result').style.display = 'none';
+        document.getElementById('feeSection').style.display = 'none';
     }
 
     function calculateAC() {
