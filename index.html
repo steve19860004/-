@@ -15,14 +15,13 @@
             --business-color: #20c997;
             --google-blue: #4285F4;
             --line-color: #06c755;
-            --phone-color: #0dcaf0; /* 電話按鈕顏色 */
+            --phone-color: #0dcaf0;
             --bg-color: #f0f4f8;
             --card-bg: #ffffff;
             --text-color: #333;
             --badge-red: #ff4757;
             --energy-yellow: #fff3cd;
             --saving-green: #d4edda;
-            --fee-bg: #f8f9fa;
         }
 
         body {
@@ -34,7 +33,7 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            padding-bottom: 100px; /* 留空間給雙懸浮按鈕 */
+            padding-bottom: 100px;
             color: var(--text-color);
             flex-direction: column;
         }
@@ -64,28 +63,15 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        .brand-logo {
-            display: block; width: 80px; height: auto; margin: 0 auto 10px auto;
-        }
-
-        h1 {
-            text-align: center; color: var(--primary-color);
-            margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 800;
-        }
-        
-        .subtitle {
-            text-align: center; color: #555; font-size: 1rem; margin-bottom: 0.5rem; font-weight: bold;
-        }
-
-        .desc-text {
-            text-align: center; color: #777; font-size: 0.9rem; margin-bottom: 1.5rem;
-            line-height: 1.5; background: #f8f9fa; padding: 10px; border-radius: 8px;
-        }
+        .brand-logo { display: block; width: 80px; height: auto; margin: 0 auto 10px auto; }
+        h1 { text-align: center; color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 800; }
+        .subtitle { text-align: center; color: #555; font-size: 1rem; margin-bottom: 0.5rem; font-weight: bold; }
+        .desc-text { text-align: center; color: #777; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5; background: #f8f9fa; padding: 10px; border-radius: 8px; }
 
         .tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #eee; }
         .tab-btn {
-            flex: 1; padding: 12px; border: none; background: none;
-            cursor: pointer; font-size: 16px; font-weight: bold; color: #888;
+            flex: 1; padding: 12px; border: none; background: none; cursor: pointer;
+            font-size: 16px; font-weight: bold; color: #888;
             border-bottom: 3px solid transparent; transition: all 0.3s;
         }
         .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); }
@@ -96,7 +82,6 @@
 
         .input-group { margin-bottom: 1rem; }
         label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
-        
         input[type="number"], select, input[type="range"] {
             width: 100%; padding: 12px; border: 1px solid #ddd;
             border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fff;
@@ -116,43 +101,28 @@
 
         .btn-row { display: flex; gap: 10px; margin-top: 20px; }
         button.calc-btn {
-            flex: 2; padding: 14px; background-color: var(--primary-color);
-            color: white; border: none; border-radius: 8px;
+            flex: 2; padding: 14px; background-color: var(--primary-color); color: white; border: none; border-radius: 8px;
             font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; transform: scale(1);
         }
         button.calc-btn:hover { background-color: var(--primary-hover); }
         button.calc-btn:active { transform: scale(0.98); }
-        button.reset-btn {
-            flex: 1; padding: 14px; background-color: #e2e6ea;
-            color: #495057; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
-        }
+        button.reset-btn { flex: 1; padding: 14px; background-color: #e2e6ea; color: #495057; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
         #result { margin-top: 25px; display: none; border-top: 1px solid #eee; padding-top: 20px; }
         
         .rec-card {
-            background: #fff; border: 2px solid var(--primary-color);
-            border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 15px;
+            background: #fff; border: 2px solid var(--primary-color); border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .rec-value { font-size: 1.8rem; font-weight: 800; color: var(--primary-color); }
         .rec-sub { font-size: 0.9rem; color: #666; margin-top: 5px; }
-        
-        .type-badge {
-            background: #e9ecef; color: #555; padding: 4px 10px; 
-            border-radius: 20px; font-size: 0.85rem; margin-top: 8px; display: inline-block;
-        }
+        .type-badge { background: #e9ecef; color: #555; padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; margin-top: 8px; display: inline-block; }
 
-        .energy-box {
-            background: var(--energy-yellow); border: 1px solid #ffeeba;
-            color: #856404; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 0.9rem; text-align: left;
-        }
+        .energy-box { background: var(--energy-yellow); border: 1px solid #ffeeba; color: #856404; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 0.9rem; text-align: left; }
         .energy-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .saving-highlight {
-            background-color: var(--saving-green); color: #155724; padding: 5px 10px;
-            border-radius: 5px; margin-top: 10px; text-align: center; font-weight: bold; border: 1px solid #c3e6cb;
-        }
+        .saving-highlight { background-color: var(--saving-green); color: #155724; padding: 5px 10px; border-radius: 5px; margin-top: 10px; text-align: center; font-weight: bold; border: 1px solid #c3e6cb; }
 
-        /* 施工費用表格區 */
+        /* 施工費用區 */
         .fee-section { margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 15px; display: none; }
         .fee-title { font-weight: bold; color: #555; margin-bottom: 10px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px;}
         .fee-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 10px; }
@@ -160,11 +130,28 @@
         .fee-table td:last-child { text-align: right; font-weight: bold; color: #333; }
         .fee-note { font-size: 0.8rem; color: #999; text-align: center; }
 
-        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .action-btn {
-            padding: 12px; border: none; border-radius: 8px; cursor: pointer;
-            font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 0.95rem;
+        /* FAQ 區塊 */
+        .faq-section { margin-top: 30px; border-top: 2px solid #eee; padding-top: 20px; }
+        .faq-header { font-size: 1.2rem; font-weight: bold; text-align: center; color: var(--primary-color); margin-bottom: 15px; }
+        .faq-item { background: #f8f9fa; margin-bottom: 10px; border-radius: 8px; overflow: hidden; }
+        .faq-question { 
+            padding: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            color: #444; transition: background 0.2s;
         }
+        .faq-question:hover { background: #e9ecef; }
+        .faq-answer { 
+            padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: #fff; color: #666; font-size: 0.95rem; line-height: 1.6;
+        }
+        .faq-answer.open { padding: 15px; max-height: 200px; border-top: 1px solid #eee; }
+        .arrow { transition: transform 0.3s; }
+        .faq-question.active .arrow { transform: rotate(180deg); }
+
+        /* 地圖區塊 */
+        .map-section { margin-top: 30px; margin-bottom: 20px; }
+        .map-frame { width: 100%; height: 250px; border: 0; border-radius: 12px; }
+
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .action-btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 0.95rem; }
         .google-btn { background-color: var(--google-blue); grid-column: span 2; font-size: 1.1rem; padding: 14px; }
         .line-btn { background-color: var(--line-color); }
         .copy-btn { background-color: #6c757d; }
@@ -173,18 +160,12 @@
         .footer { text-align: center; font-size: 0.85rem; color: #888; margin-top: 10px; line-height: 1.6; }
         .footer span { font-weight: bold; color: var(--primary-color); }
 
-        /* 懸浮按鈕群組 */
-        .float-group {
-            position: fixed; bottom: 20px; right: 20px; z-index: 100;
-            display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
-        }
+        /* 懸浮按鈕 */
+        .float-group { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
         .float-btn {
-            background-color: var(--line-color); color: white;
-            padding: 12px 20px; border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-weight: bold; text-decoration: none;
-            display: flex; align-items: center; gap: 8px;
-            transition: transform 0.2s;
+            background-color: var(--line-color); color: white; padding: 12px 20px; border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-weight: bold; text-decoration: none;
+            display: flex; align-items: center; gap: 8px; transition: transform 0.2s;
         }
         .float-btn.phone { background-color: var(--phone-color); color: #fff; }
         .float-btn:hover { transform: scale(1.05); }
@@ -194,12 +175,8 @@
 <body>
 
 <div class="float-group">
-    <a href="tel:0912132100" class="float-btn phone">
-        📞 撥打電話
-    </a>
-    <a href="https://line.me/R/ti/p/@bah4568u" target="_blank" class="float-btn">
-        💬 LINE 預約
-    </a>
+    <a href="tel:0912132100" class="float-btn phone">📞 撥打電話</a>
+    <a href="https://line.me/R/ti/p/@bah4568u" target="_blank" class="float-btn">💬 LINE 預約</a>
 </div>
 
 <div class="container">
@@ -210,7 +187,7 @@
     <div class="subtitle">冷氣大小專業評估器</div>
     <div class="desc-text">
         ✨ 輸入坪數算噸數，Google 幫你查價格<br>
-        💰 <b>透明：</b>含電費估算與施工行情參考
+        💰 <b>透明：</b>含電費估算與施工行情
     </div>
     
     <div class="tabs">
@@ -219,7 +196,7 @@
     </div>
 
     <div class="input-group">
-        <label>1. 空間類型 (用途)</label>
+        <label>1. 空間類型</label>
         <select id="roomType">
             <optgroup label="🏠 居家空間">
                 <option value="450">臥室 (450 kcal)</option>
@@ -282,55 +259,62 @@
         <div class="rec-card">
             <div style="font-size:0.9rem; color:#666;">建議安裝規格</div>
             <div class="rec-value" id="resModel">計算中...</div>
-            <div class="rec-sub">
-                <span id="resBTU">0</span> BTU / 約 <span id="resTon">0</span> 噸
-            </div>
+            <div class="rec-sub"><span id="resBTU">0</span> BTU / 約 <span id="resTon">0</span> 噸</div>
             <div id="resUnitType" class="type-badge">建議機型：壁掛式</div>
             
             <div class="energy-box">
                 <div style="text-align:center; font-weight:bold; margin-bottom:8px; color:#856404;">⚡ 新舊冷氣電費對決</div>
-                <div class="energy-row">
-                    <span>舊型定頻電費：</span>
-                    <span style="text-decoration: line-through; color:#999;">$ <span id="costOld">0</span> /月</span>
-                </div>
-                <div class="energy-row">
-                    <span style="font-weight:bold; color:#000;">一級變頻電費：</span>
-                    <span style="font-weight:bold; color:#d0021b;">$ <span id="costNew">0</span> /月</span>
-                </div>
-                
-                <div class="saving-highlight">
-                    換新冷氣，每月省下約 $ <span id="saveAmount">0</span> 元！
-                </div>
+                <div class="energy-row"><span>舊型定頻電費：</span><span style="text-decoration: line-through; color:#999;">$ <span id="costOld">0</span> /月</span></div>
+                <div class="energy-row"><span style="font-weight:bold; color:#000;">一級變頻電費：</span><span style="font-weight:bold; color:#d0021b;">$ <span id="costNew">0</span> /月</span></div>
+                <div class="saving-highlight">換新冷氣，每月省下約 $ <span id="saveAmount">0</span> 元！</div>
             </div>
 
             <div style="margin-top:20px; text-align:center;">
-                <button onclick="toggleFees()" style="background:none; border:none; color:#0056b3; text-decoration:underline; cursor:pointer; font-size:0.9rem;">
-                    📋 查看額外施工參考行情
-                </button>
+                <button onclick="toggleFees()" style="background:none; border:none; color:#0056b3; text-decoration:underline; cursor:pointer; font-size:0.9rem;">📋 查看額外施工參考行情</button>
                 <div id="feeSection" class="fee-section">
                     <div class="fee-title">🔧 特殊施工行情參考</div>
-                    <table class="fee-table" id="feeTable">
-                        </table>
-                    <div class="fee-note">
-                        *以上為連工帶料參考價，實際依現場環境難易度報價為準。<br>基本安裝通常包含5米銅管與電線。
-                    </div>
+                    <table class="fee-table" id="feeTable"></table>
+                    <div class="fee-note">*以上為連工帶料參考價，實際依現場環境報價為準。</div>
                 </div>
             </div>
 
             <div style="margin-top: 15px; font-size: 0.9rem; color: #555;">
-                總熱負載：<span id="resTotalKcal" style="font-weight:bold;">0</span> kcal/h
-                <br>機型價格：<span id="resPrice">--</span>
+                總熱負載：<span id="resTotalKcal" style="font-weight:bold;">0</span> kcal/h<br>機型價格：<span id="resPrice">--</span>
             </div>
         </div>
 
         <div class="action-buttons">
-            <a href="#" target="_blank" id="searchLink" class="action-btn google-btn">
-                🔍 Google 品牌費用查詢
-            </a>
+            <a href="#" target="_blank" id="searchLink" class="action-btn google-btn">🔍 Google 品牌費用查詢</a>
             <button onclick="shareToLine()" class="action-btn line-btn">LINE 分享</button>
             <button onclick="copyToClipboard()" class="action-btn copy-btn">複製結果</button>
         </div>
     </div>
+
+    <div class="faq-section">
+        <div class="faq-header">❓ 常見問題</div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">現場場勘需要費用嗎？<span class="arrow">▼</span></div>
+            <div class="faq-answer">我們提供免費的初步線上諮詢！若需要師傅現場場勘規劃，歡迎加 LINE 預約，成交可折抵場勘費。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">安裝有保固嗎？<span class="arrow">▼</span></div>
+            <div class="faq-answer">有的！品盛冷氣行安裝的冷氣皆享原廠保固，施工部分我們也提供安心保固，讓您使用無後顧之憂。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">可以配合裝潢進場時間嗎？<span class="arrow">▼</span></div>
+            <div class="faq-answer">沒問題！我們有豐富的配合裝潢經驗，可配合設計師進行兩次施工（拉管+掛機），確保美觀。</div>
+        </div>
+    </div>
+
+    <div class="map-section">
+        <div class="faq-header">📍 門市位置</div>
+        <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.7036493264513!2d121.56627631500643!3d25.03396388397232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abb6da9c9e1f%3A0x1206b5370d909a75!2z5Y-w5YyXMTAx!5e0!3m2!1szh-TW!2stw!4v1626244799059!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe>
+        <div style="text-align:center; margin-top:10px; font-size:0.9rem;">
+            <div>電話：0912-132-100</div>
+            <div>歡迎來店諮詢，請先預約</div>
+        </div>
+    </div>
+
 </div>
 
 <div class="footer">
@@ -339,89 +323,42 @@
 </div>
 
 <script>
-    const priceData = {
-        2.2: { min: 14000, max: 22000 },
-        2.8: { min: 18000, max: 28000 },
-        3.6: { min: 25000, max: 35000 },
-        4.1: { min: 29000, max: 40000 },
-        5.0: { min: 35000, max: 48000 },
-        6.3: { min: 42000, max: 58000 },
-        7.1: { min: 50000, max: 65000 },
-        8.0: { min: 58000, max: 75000 },
-        10.0: { min: 70000, max: 90000 }, 
-        12.0: { min: 85000, max: 110000 },
-        14.0: { min: 100000, max: 130000 }
-    };
+    // JS Logic
+    const priceData = { 2.2: { min: 14000, max: 22000 }, 2.8: { min: 18000, max: 28000 }, 3.6: { min: 25000, max: 35000 }, 4.1: { min: 29000, max: 40000 }, 5.0: { min: 35000, max: 48000 }, 6.3: { min: 42000, max: 58000 }, 7.1: { min: 50000, max: 65000 }, 8.0: { min: 58000, max: 75000 }, 10.0: { min: 70000, max: 90000 }, 12.0: { min: 85000, max: 110000 }, 14.0: { min: 100000, max: 130000 } };
+    const installFees = [ { item: "室外機豪華A架", price: "$1,500 起" }, { item: "牆面洗孔 (1孔)", price: "$800 ~ $1,200" }, { item: "冷媒管延長 (每米)", price: "$400 ~ $500" }, { item: "電源線延長 (每米)", price: "$100 ~ $150" }, { item: "排水器安裝", price: "$1,500 起" }, { item: "拆除舊機 (回收免)", price: "$500 ~ $1,000" } ];
+    let currentMode = 'dimensions'; let finalResultText = "";
 
-    // 施工費用參考
-    const installFees = [
-        { item: "室外機豪華A架", price: "$1,500 起" },
-        { item: "牆面洗孔 (1孔)", price: "$800 ~ $1,200" },
-        { item: "冷媒管延長 (每米)", price: "$400 ~ $500" },
-        { item: "電源線延長 (每米)", price: "$100 ~ $150" },
-        { item: "排水器安裝", price: "$1,500 起" },
-        { item: "拆除舊機 (回收免)", price: "$500 ~ $1,000" }
-    ];
-
-    let currentMode = 'dimensions';
-    let finalResultText = "";
-
-    function switchTab(mode) {
-        currentMode = mode;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        document.querySelectorAll('.input-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(mode === 'dimensions' ? 'input-dimensions' : 'input-area').classList.add('active');
-        document.getElementById('result').style.display = 'none';
-    }
-
-    function updateRangeVal(val) {
-        document.getElementById('hoursDisplay').innerText = val + " 小時";
-    }
+    function switchTab(mode) { currentMode = mode; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); document.querySelectorAll('.input-section').forEach(s => s.classList.remove('active')); document.getElementById(mode === 'dimensions' ? 'input-dimensions' : 'input-area').classList.add('active'); document.getElementById('result').style.display = 'none'; }
+    function updateRangeVal(val) { document.getElementById('hoursDisplay').innerText = val + " 小時"; }
     
     function toggleFees() {
         const feeSec = document.getElementById('feeSection');
-        if (feeSec.style.display === 'block') {
-            feeSec.style.display = 'none';
-        } else {
-            const table = document.getElementById('feeTable');
-            table.innerHTML = "";
-            installFees.forEach(f => {
-                const row = `<tr><td>${f.item}</td><td>${f.price}</td></tr>`;
-                table.innerHTML += row;
-            });
+        if (feeSec.style.display === 'block') { feeSec.style.display = 'none'; } else {
+            const table = document.getElementById('feeTable'); table.innerHTML = "";
+            installFees.forEach(f => { table.innerHTML += `<tr><td>${f.item}</td><td>${f.price}</td></tr>`; });
             feeSec.style.display = 'block';
         }
     }
+    
+    function toggleFaq(element) {
+        element.classList.toggle('active');
+        const answer = element.nextElementSibling;
+        answer.classList.toggle('open');
+    }
 
     function resetForm() {
-        document.getElementById('length').value = '';
-        document.getElementById('width').value = '';
-        document.getElementById('pingInput').value = '';
-        document.getElementById('ceilingHeight').value = '3.0';
-        document.getElementById('usageHours').value = '8';
-        updateRangeVal(8);
-        document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
-        document.getElementById('roomType').selectedIndex = 1; 
-        document.getElementById('result').style.display = 'none';
-        document.getElementById('feeSection').style.display = 'none';
+        document.getElementById('length').value = ''; document.getElementById('width').value = ''; document.getElementById('pingInput').value = ''; document.getElementById('ceilingHeight').value = '3.0'; document.getElementById('usageHours').value = '8'; updateRangeVal(8);
+        document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false); document.getElementById('roomType').selectedIndex = 1; document.getElementById('result').style.display = 'none'; document.getElementById('feeSection').style.display = 'none';
     }
 
     function calculateAC() {
         let ping = 0;
         if (currentMode === 'dimensions') {
-            const l = parseFloat(document.getElementById('length').value);
-            const w = parseFloat(document.getElementById('width').value);
-            if (!l || !w) return alert("請輸入長度與寬度");
-            ping = l * w * 0.3025;
-        } else {
-            ping = parseFloat(document.getElementById('pingInput').value);
-            if (!ping) return alert("請輸入坪數");
-        }
+            const l = parseFloat(document.getElementById('length').value); const w = parseFloat(document.getElementById('width').value);
+            if (!l || !w) return alert("請輸入長度與寬度"); ping = l * w * 0.3025;
+        } else { ping = parseFloat(document.getElementById('pingInput').value); if (!ping) return alert("請輸入坪數"); }
 
-        const baseKcal = parseInt(document.getElementById('roomType').value);
-        let reqKcal = ping * baseKcal;
-
+        const baseKcal = parseInt(document.getElementById('roomType').value); let reqKcal = ping * baseKcal;
         let envText = [];
         if (document.getElementById('westSun').checked) { reqKcal *= 1.2; envText.push("西曬"); }
         if (document.getElementById('topFloor').checked) { reqKcal *= 1.2; envText.push("頂樓"); }
@@ -429,28 +366,17 @@
         if (document.getElementById('crowded').checked) { reqKcal *= 1.1; envText.push("人潮多"); }
 
         const height = parseFloat(document.getElementById('ceilingHeight').value) || 3.0;
-        if (height > 3.0) {
-            const heightFactor = height / 3.0; 
-            reqKcal *= heightFactor;
-            envText.push(`挑高${height}m`);
-        }
+        if (height > 3.0) { reqKcal *= (height / 3.0); envText.push(`挑高${height}m`); }
 
         const reqKW = reqKcal / 860;
         const standardSizes = [2.2, 2.8, 3.6, 4.1, 5.0, 6.3, 7.1, 8.0, 10.0, 12.0, 14.0];
         let recSize = standardSizes.find(s => s >= reqKW);
         
         const hours = parseInt(document.getElementById('usageHours').value);
-        let costNew = 0;
-        let costOld = 0;
-        let saveAmount = 0;
-        
+        let costNew = 0, costOld = 0, saveAmount = 0;
         if (recSize) {
-            const powerNew = recSize / 5.0; 
-            costNew = powerNew * hours * 30 * 4.5; 
-
-            const powerOld = recSize / 2.8;
-            costOld = powerOld * hours * 30 * 4.5;
-
+            costNew = (recSize / 5.0) * hours * 30 * 4.5;
+            costOld = (recSize / 2.8) * hours * 30 * 4.5;
             saveAmount = costOld - costNew;
         }
 
@@ -459,76 +385,36 @@
         const isCommercial = baseKcal >= 700; 
 
         document.getElementById('resTotalKcal').innerText = Math.round(reqKcal);
-        document.getElementById('resHours').innerText = hours;
-        
         document.getElementById('costNew').innerText = Math.round(costNew).toLocaleString();
         document.getElementById('costOld').innerText = Math.round(costOld).toLocaleString();
         document.getElementById('saveAmount').innerText = Math.round(saveAmount).toLocaleString();
 
-        let modelStr = "";
-        let priceStr = "需專案報價";
-        let unitTypeStr = "建議機型：壁掛式";
-        let searchKeyword = "";
-        let btuStr = "0";
-        let tonStr = "0";
+        let modelStr = "", priceStr = "需專案報價", unitTypeStr = "建議機型：壁掛式", searchKeyword = "", btuStr = "0", tonStr = "0";
 
         if (recSize) {
-            modelStr = `${recSize} kW`;
-            btuStr = Math.round(recSize * 3412).toLocaleString();
-            tonStr = (recSize / 2.8).toFixed(1);
-            
+            modelStr = `${recSize} kW`; btuStr = Math.round(recSize * 3412).toLocaleString(); tonStr = (recSize / 2.8).toFixed(1);
             if (isCommercial) {
-                if (recSize >= 8.0) {
-                    unitTypeStr = "建議機型：箱型(落地) 或 吊隱式";
-                    searchKeyword = `${recSize}kw 商用冷氣 價格`;
-                } else {
-                    unitTypeStr = "建議機型：四方吹(嵌入) 或 吊隱式";
-                    searchKeyword = `${recSize}kw 嵌入式冷氣 價格`;
-                }
-            } else {
-                searchKeyword = `${recSize}kw 冷氣 價格`;
-            }
+                if (recSize >= 8.0) { unitTypeStr = "建議機型：箱型(落地) 或 吊隱式"; searchKeyword = `${recSize}kw 商用冷氣 價格`; }
+                else { unitTypeStr = "建議機型：四方吹(嵌入) 或 吊隱式"; searchKeyword = `${recSize}kw 嵌入式冷氣 價格`; }
+            } else { searchKeyword = `${recSize}kw 冷氣 價格`; }
 
-            if (priceData[recSize]) {
-                const p = priceData[recSize];
-                priceStr = `$${p.min.toLocaleString()} ~ $${p.max.toLocaleString()}`;
-            }
-
+            if (priceData[recSize]) { const p = priceData[recSize]; priceStr = `$${p.min.toLocaleString()} ~ $${p.max.toLocaleString()}`; }
+            
             const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(searchKeyword)}`;
-            document.getElementById('searchLink').href = googleUrl;
-            document.getElementById('searchLink').style.display = "flex";
-
+            document.getElementById('searchLink').href = googleUrl; document.getElementById('searchLink').style.display = "flex";
         } else {
-            modelStr = `需求 > 14 kW`;
-            unitTypeStr = "建議使用：VRV多聯變頻系統";
-            document.getElementById('searchLink').style.display = "none";
+            modelStr = `需求 > 14 kW`; unitTypeStr = "建議使用：VRV多聯變頻系統"; document.getElementById('searchLink').style.display = "none";
         }
 
-        document.getElementById('resModel').innerText = modelStr;
-        document.getElementById('resBTU').innerText = btuStr;
-        document.getElementById('resTon').innerText = tonStr;
-        document.getElementById('resUnitType').innerText = unitTypeStr;
-        document.getElementById('resPrice').innerText = priceStr;
+        document.getElementById('resModel').innerText = modelStr; document.getElementById('resBTU').innerText = btuStr; document.getElementById('resTon').innerText = tonStr;
+        document.getElementById('resUnitType').innerText = unitTypeStr; document.getElementById('resPrice').innerText = priceStr;
         document.getElementById('result').style.display = 'block';
 
-        finalResultText = 
-`【品盛冷氣行｜2026 專業評估】
-🏠 場域：${roomTypeName}
-📏 坪數：${ping.toFixed(1)} 坪
-❄️ 建議：${modelStr} (約${tonStr}噸)
-🔥 比較：換新機每月約省 $${Math.round(saveAmount)}
-💰 機型價格：${priceStr}
-(系統估算，僅供參考)`;
+        finalResultText = `【品盛冷氣行｜2026 專業評估】\n🏠 場域：${roomTypeName}\n📏 坪數：${ping.toFixed(1)} 坪\n❄️ 建議：${modelStr} (約${tonStr}噸)\n🔥 比較：換新機每月約省 $${Math.round(saveAmount)}\n💰 機型價格：${priceStr}\n(系統估算，僅供參考)`;
     }
 
-    function copyToClipboard() {
-        if (!finalResultText) return;
-        navigator.clipboard.writeText(finalResultText).then(() => alert("✅ 結果已複製！"));
-    }
-    function shareToLine() {
-        if (!finalResultText) return;
-        window.open(`https://line.me/R/msg/text/?${encodeURIComponent(finalResultText)}`, '_blank');
-    }
+    function copyToClipboard() { if (!finalResultText) return; navigator.clipboard.writeText(finalResultText).then(() => alert("✅ 結果已複製！")); }
+    function shareToLine() { if (!finalResultText) return; window.open(`https://line.me/R/msg/text/?${encodeURIComponent(finalResultText)}`, '_blank'); }
 </script>
 
 </body>
